@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Focus - Habit Tracking App
 
-## Getting Started
+A beautiful habit tracking application with data logging and analysis capabilities.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Track daily and custom frequency habits
+- Categorize habits (Health, Productivity, Personal)
+- Visual habit completion tracking
+- Weekly and monthly views
+- Data export for analysis
+- Quarterly summaries
+- User authentication
+- Cross-device synchronization
+
+## Tech Stack
+
+- Next.js 15
+- React 19
+- TypeScript
+- Tailwind CSS
+- Supabase (Authentication, Database, Hosting)
+
+## Deployment Guide
+
+### 1. Set Up Supabase
+
+1. Create a Supabase account at [supabase.com](https://supabase.com)
+2. Create a new project
+3. Run the SQL schema in `supabase/schema.sql` in the SQL Editor
+4. Set up authentication providers (Email, Google, etc.)
+5. Get your Supabase URL and anon key from the API settings
+
+### 2. Environment Setup
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Deploy to Vercel
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Add the environment variables from step 2
+4. Deploy!
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Alternatively, you can deploy with the Vercel CLI:
 
-## Learn More
+```bash
+npm i -g vercel
+vercel login
+vercel
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Local Development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Install dependencies
+npm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Run development server
+npm run dev
 
-## Deploy on Vercel
+# Build for production
+npm run build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Start production server
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Data Analysis
+
+### Exporting Data
+
+1. Log in to your account
+2. Navigate to the Profile page
+3. Use the Export Data section to download your habit data as CSV
+4. Optionally specify date ranges for the export
+
+### Quarterly Summaries
+
+1. Log in to your account
+2. Navigate to the Profile page
+3. Use the Quarterly Summary section to view summaries
+4. Select the year and quarter to analyze
+
+## Database Schema
+
+The application uses three main tables:
+
+1. `habit_categories` - Stores habit categories
+2. `habits` - Stores individual habits
+3. `habit_completions` - Stores habit completion records
+
+The schema includes:
+- Row-level security for data protection
+- Indexes for performance optimization
+- Analytics view for easier reporting
+- Custom function for quarterly summaries
+
+## License
+
+MIT

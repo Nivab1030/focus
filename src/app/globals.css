@@ -3,6 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
 }
 
 @theme inline {
@@ -16,11 +19,297 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --glass-bg: rgba(20, 20, 30, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: white;
+  background-image: url('/background_sky.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: -1;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transform: rotate(10deg);
+  pointer-events: none;
+}
+
+.habit-container {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.habit-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.habit-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.habit-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+/* Confetti animation */
+.confetti {
+  animation: confetti-fall 2s linear forwards;
+  position: absolute;
+  z-index: 10;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Enhanced confetti */
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  animation: confetti-explosion 1.5s ease-out forwards;
+  z-index: 100;
+}
+
+@keyframes confetti-explosion {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Weekly tracker */
+.week-tracker {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.day-cube {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.day-cube.today {
+  border: 2px solid white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.day-cube.past {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Multi-color cell for heatmap */
+.multi-color-cell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.color-segment {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+
+/* Tooltip styles */
+.tooltip-date {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.tooltip-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tooltip-category {
+  font-size: 0.8em;
+}
+
+/* Calendar heatmap custom styles */
+.react-calendar-heatmap .react-calendar-heatmap-small-text {
+  font-size: 5px;
+}
+
+.react-calendar-heatmap rect:hover {
+  fill: rgba(255, 255, 255, 0.2);
+}
+
+/* Default fill for empty cells */
+.react-calendar-heatmap .color-empty {
+  stroke: rgba(255, 255, 255, 0.0) !important;
+}
+
+.react-calendar-heatmap text {
+  fill: rgb(255, 255, 255) !important;
+}
+
+
+/* Health category colors */
+.react-calendar-heatmap .color-health-0 {
+  fill: #4ade80;
+  opacity: 0.2;
+}
+.react-calendar-heatmap .color-health-25 {
+  fill: #4ade80;
+  opacity: 0.4;
+}
+.react-calendar-heatmap .color-health-50 {
+  fill: #4ade80;
+  opacity: 0.6;
+}
+.react-calendar-heatmap .color-health-75 {
+  fill: #4ade80;
+  opacity: 0.8;
+}
+.react-calendar-heatmap .color-health-100 {
+  fill: #4ade80;
+  opacity: 1;
+}
+
+/* Productivity category colors */
+.react-calendar-heatmap .color-productivity-0 {
+  fill: #60a5fa;
+  opacity: 0.2;
+}
+.react-calendar-heatmap .color-productivity-25 {
+  fill: #60a5fa;
+  opacity: 0.4;
+}
+.react-calendar-heatmap .color-productivity-50 {
+  fill: #60a5fa;
+  opacity: 0.6;
+}
+.react-calendar-heatmap .color-productivity-75 {
+  fill: #60a5fa;
+  opacity: 0.8;
+}
+.react-calendar-heatmap .color-productivity-100 {
+  fill: #60a5fa;
+  opacity: 1;
+}
+
+/* Personal category colors */
+.react-calendar-heatmap .color-personal-0 {
+  fill: #f472b6;
+  opacity: 0.2;
+}
+.react-calendar-heatmap .color-personal-25 {
+  fill: #f472b6;
+  opacity: 0.4;
+}
+.react-calendar-heatmap .color-personal-50 {
+  fill: #f472b6;
+  opacity: 0.6;
+}
+.react-calendar-heatmap .color-personal-75 {
+  fill: #f472b6;
+  opacity: 0.8;
+}
+.react-calendar-heatmap .color-personal-100 {
+  fill: #f472b6;
+  opacity: 1;
+}
+
+/* Multi-category colors */
+.react-calendar-heatmap .color-multi-0 {
+  fill: #9ca3af;
+  opacity: 0.2;
+}
+.react-calendar-heatmap .color-multi-25 {
+  fill: #9ca3af;
+  opacity: 0.4;
+}
+.react-calendar-heatmap .color-multi-50 {
+  fill: #9ca3af;
+  opacity: 0.6;
+}
+.react-calendar-heatmap .color-multi-75 {
+  fill: #9ca3af;
+  opacity: 0.8;
+}
+.react-calendar-heatmap .color-multi-100 {
+  fill: #9ca3af;
+  opacity: 1;
+}
+
+/* Custom cell styles */
+.react-calendar-heatmap .custom-cell {
+  fill: transparent;
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.2s ease;
 }
